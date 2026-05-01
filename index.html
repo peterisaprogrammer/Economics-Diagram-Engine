@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Economics Revision Software</title>
+</head>
+<body>
+    <h1>Economics Revision Software</h1>
+
+    <button onClick="fetchSandD()" style="position: absolute; top: 100px; left: 1075px;">Supply and Demand</button>
+    <br>
+    <img id="Diagram" style="margin-top: 0px; width:1050px; height:700px;"/>
+
+    <select id="EXTdropbox" style="position: absolute; top: 140px; left: 1075px;">
+        <option value="">Externalities
+        </option>
+        <option value="NEC">Negative externalities of Consumption</option>
+        <option value="PEC">Positive externalities of Consumption</option>
+        <option value="NEP">Negative externalities of Production</option>
+        <option value="PEP">Positive externalities of Production</option>
+    </select>
+
+    <button onclick="enterEXT()" style="position: absolute; top: 140px; left: 1325px;">Enter</button>
+
+    <select id="MPdropbox" style="position: absolute; top: 180px; left: 1075px;">
+        <option value="">Market Power
+        </option>
+        <option value="PC">Perfect Competition</option>
+        <option value="MonC">Monopolistic Competition</option>
+        <option value="OLI">Oligopolistic Competition</option>
+        <option value="Mon">Monopoly</option>
+    </select>
+
+    <button onclick="enterMP()" style="position: absolute; top: 180px; left: 1250px;">Enter</button>
+
+    <select id="Mdropbox" style="position: absolute; top: 220px; left: 1075px;">
+        <option value="">Macro
+        </option>
+        <option value="ADAS">AD/AS</option>
+        <option value="MONE">Monetarist</option>
+        <option value="KEYNES">Keynes</option>
+    </select>
+
+    <button onclick="enterM()" style="position: absolute; top: 220px; left: 1165px;">Enter</button>
+
+    <div id="SandDupdater" style="position: absolute; top: 260px; left: 1075px; display: none;">
+        <label>Supply elasticity: <input type="number" id="SandDsupplyELAS" value="1" step="0.1"></label><br>
+        <label>Demand position: <input type="number" id="SandDdemandIntercept" value="50" step="1"></label><br>
+        <label>Demand elasticity: <input type="number" id="SandDdemandELAS" value="1" step="0.1"></label><br>
+        <button onclick="updateSandD()">Update Diagram</button>
+    </div>
+
+    <button id="save" onclick="SaveButton()" style="position: absolute; top: 400px; left: 1075px; display: none;">Save Diagram</button>
+
+    <script>
+        function fetchSandD(){
+            document.getElementById('Diagram').src = 'SandD?time=' + new Date().getTime();
+            document.getElementById('SandDupdater').style.display = 'block';
+            document.getElementById('save').style.display = 'block';
+        }
+
+        function enterEXT(){
+            let EXTvalue = document.getElementById("EXTdropbox").value;
+            document.getElementById('SandDupdater').style.display = 'none';
+            document.getElementById('save').style.display = 'none';
+            if (EXTvalue === "NEC"){
+                document.getElementById('Diagram').src = 'NEC?time=' + new Date().getTime();
+            }
+            if (EXTvalue === "PEC"){
+                document.getElementById('Diagram').src = 'PEC?time=' + new Date().getTime();
+            }
+            if (EXTvalue === "NEP"){
+                document.getElementById('Diagram').src = 'NEP?time=' + new Date().getTime();
+            }
+            if (EXTvalue === "PEP"){
+                document.getElementById('Diagram').src = 'PEP?time=' + new Date().getTime();
+            }
+        }
+
+        function enterMP(){
+            let MPvalue = document.getElementById("MPdropbox").value;
+            document.getElementById('SandDupdater').style.display = 'none';
+            document.getElementById('save').style.display = 'none';
+            if (MPvalue === "PC"){
+                document.getElementById('Diagram').src = 'PC?time=' + new Date().getTime();
+            }
+            if (MPvalue === "MonC"){
+                document.getElementById('Diagram').src = 'MonC?time=' + new Date().getTime();
+            }
+            if (MPvalue === "OLI"){
+                document.getElementById('Diagram').src = 'OLI?time=' + new Date().getTime();
+            }
+            if (MPvalue === "Mon"){
+                document.getElementById('Diagram').src = 'Mon?time=' + new Date().getTime();
+            }
+        }
+
+
+        function enterM(){
+            let Mvalue = document.getElementById("Mdropbox").value;
+            document.getElementById('SandDupdater').style.display = 'none';
+            document.getElementById('save').style.display = 'none';
+            if (Mvalue === "ADAS"){
+                document.getElementById('Diagram').src = 'ADAS?time=' + new Date().getTime();
+            }
+            if (Mvalue === "MONE"){
+                document.getElementById('Diagram').src = 'MONE?time=' + new Date().getTime();
+            }
+            if (Mvalue === "KEYNES"){
+                document.getElementById('Diagram').src = 'KEYNES?time=' + new Date().getTime();
+            }
+        }
+
+        function updateSandD(){
+            let SandDSupplyGradient = document.getElementById("SandDsupplyELAS").value;
+            let SandDDemand_Y_Intercept = document.getElementById("SandDdemandIntercept").value;
+            let SandDDemandGradient = document.getElementById("SandDdemandELAS").value;
+
+            document.getElementById('Diagram').src =
+            `/SandD?SandDSupplyGradient=${SandDSupplyGradient}&SandDDemand_Y_Intercept=${SandDDemand_Y_Intercept}&SandDDemandGradient=${SandDDemandGradient}&time=${new Date().getTime()}`;
+        }
+
+        function SaveButton(){
+            const diagram = document.getElementById("Diagram");
+            const url = diagram.src;
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "SandDdiagram.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
